@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Document</title>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</head>
+
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+
+    h5{
+        background-color: brown;
+    }
+h1{
+    color: cornflowerblue;
+    text-align: center;
+}
+    
+</style>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        class App extends React.Component {
+            constructor(){
+                super();
+                this.state = {
+                    users: []
+                }
+            }
+            componentDidMount(){
+                console.log('testing')
+                fetch('https://api.apify.com/v2/key-value-stores/toDWvRj1JpTXiM8FF/records/LATEST?disableRedirect=true')
+                .then(res => res.json())
+                .then(dt => this.setState({users: dt})) 
+            }
+            render() {
+                console.log(this.state.users)
+                return (
+                    <div className="container">
+                        <div className="">
+                            
+                            <h1 > Covid-19 Dashboard</h1>
+                            <hr></hr>
+                            <h5 className="">{`Total India ActiveCases: ${this.state.users.activeCases}`}</h5>
+                            <h4 className="">{`Total India ActiveCasesNew: ${this.state.users.activeCasesNew}`}</h4>
+                            <h3 className="">{`Total India Deaths: ${this.state.users.deaths}`}</h3>
+                            <h2 className="">{`Total India DeathsNew: ${this.state.users.deathsNew}`}</h2>
+                            <h5 className="">{`Total India PreviousDayTests: ${this.state.users.previousDayTests}`}</h5>
+                            
+                        
+                    </div>
+                    <div className="row">
+                        {this.state.users.regionData && this.state.users.regionData.map(user =><div key={user.region} className="col-sm-3"> <div className="card" style={{width: '18rem' }}>
+                            <div className="card-body">
+                            <h4 className="card-title">{`Region: ${user.region}`}</h4>
+                            <h5 className="card-title">{`ActiveCases: ${user.activeCases}`}</h5>
+                            <p className="card-text">{user.totalCases}</p>
+                            <a href="#" className="btn btn-primary">Go somewhere</a>
+                            </div></div>
+                        </div>)}
+                        
+                    </div>
+                </div>
+
+
+                );
+
+            }
+        }
+        ReactDOM.render(<App />, document.getElementById("root"));
+
+
+    </script>
+
+    
+</body>
+
+</html>
